@@ -3,9 +3,11 @@ import { Roboto } from "next/font/google";
 
 import { useAppDispatch, useAppSelector } from "@/shared/hooks";
 import { PageLayout } from "@/shared/ui/page-layout";
+import { Section } from "@/shared/ui/section";
 import { Layout } from "@/shared/ui/layout";
 import { ICustomer } from "@/shared/api";
 import { fetchAllCustomers } from "@/entities/customer";
+import { CustomersTable } from "@/features/customers-table";
 
 // const inter = Roboto({ subsets: ["cyrillic"], weight: ["400"] });
 // className={inter.className}
@@ -38,17 +40,13 @@ const Main: React.FC = () => {
   return (
     <PageLayout title="Клиенты">
       <main>
-        <Layout>
-          {/* <CustomerControls /> */}
+        <Section>
+          <Layout>
+            {/* <CustomerControls /> */}
 
-          <h1>Table</h1>
-
-          <ul>
-            {select.customers.map((c: ICustomer) => (
-              <li key={c.id}>{c.name}</li>
-            ))}
-          </ul>
-        </Layout>
+            <CustomersTable />
+          </Layout>
+        </Section>
       </main>
     </PageLayout>
   );

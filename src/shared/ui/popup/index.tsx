@@ -9,7 +9,7 @@ interface IProps {
   onClose: () => void;
 }
 
-export const Popup: React.FC<IProps> = memo(({ children, onClose }) => {
+export const Popup: React.FC<IProps> = ({ children, onClose }) => {
   const callbacks = {
     onClose: useCallback(
       (e: MouseEvent<HTMLDivElement>) => onClose(),
@@ -32,4 +32,4 @@ export const Popup: React.FC<IProps> = memo(({ children, onClose }) => {
       <div className="Background" onClick={callbacks.onClose} />
     </Portal>
   );
-});
+};

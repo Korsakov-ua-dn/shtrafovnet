@@ -1,0 +1,1 @@
+export { dataTransferObject } from './data-transfer-object';

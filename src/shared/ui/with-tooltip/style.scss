@@ -1,0 +1,9 @@
+.WithTooltip {
+  width: 100%;
+  max-width: fit-content;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: inherit;
+}

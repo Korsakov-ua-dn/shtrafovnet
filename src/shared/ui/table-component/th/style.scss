@@ -1,0 +1,46 @@
+.Th {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px;
+  box-sizing: border-box;
+  
+  & div {
+    width: fit-content;
+    position: relative;
+    display: flex;
+    color: #ffffff;
+    padding-right: 18px;
+    & .Th__directionArrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+}
+
+.Th_active {
+  & [data-direction="ascending"] {
+    visibility: visible;
+    transform: rotate(180deg);
+  }
+
+  & [data-direction="descending"] {
+    visibility: visible;
+  }
+}
+
+.Th_sort {
+  cursor: pointer;
+}
+
+.Th__directionArrow {
+  height: 17px !important;
+  width: 14px !important;
+  visibility: hidden;
+}

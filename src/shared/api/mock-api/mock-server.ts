@@ -9,5 +9,5 @@ export const createMirageServer = () => {
     },
   });
 
-  return server;
+  return server.shutdown;
 };
