@@ -1,6 +1,16 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
 
-export default function App({ Component, pageProps }: AppProps) {
+import { createMirageServer } from '@/shared/api';
+import { wrapper } from '@/store';
+import '@/styles/globals.scss';
+
+function App({ Component, pageProps }: AppProps) {
+  if (process.env.USE_MIRAGE_SERVER === 'true') {
+    console.log('ATTENTION - Using mirage server')
+    createMirageServer()
+  }
+  
   return <Component {...pageProps} />
 }
+
+export default wrapper.withRedux(App);
