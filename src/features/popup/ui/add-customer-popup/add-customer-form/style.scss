@@ -1,0 +1,11 @@
+.AddCustomerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.AddCustomerForm__input {
+  min-width: 320px !important;
+  width: 320px !important;
+}

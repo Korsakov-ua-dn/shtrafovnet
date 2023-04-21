@@ -1,15 +1,19 @@
-import React, { MouseEvent, memo, useCallback, useEffect } from 'react';
+import { MouseEvent, useCallback, useEffect } from "react";
 
-import { Portal } from '../portal';
+import CloseIcon from "@mui/icons-material/Close";
+import { Portal } from "../portal";
+import { Subtitle } from "../subtitle";
 
-import './style.scss';
+import "./style.scss";
 
 interface IProps {
   children: React.ReactNode;
+  title?: string;
+  contentWidth?: number;
   onClose: () => void;
 }
 
-export const Popup: React.FC<IProps> = ({ children, onClose }) => {
+export const Popup: React.FC<IProps> = ({ children, title, contentWidth=500, onClose }) => {
   const callbacks = {
     onClose: useCallback(
       (e: MouseEvent<HTMLDivElement>) => onClose(),
@@ -18,16 +22,22 @@ export const Popup: React.FC<IProps> = ({ children, onClose }) => {
   };
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   });
 
   return (
     <Portal>
       <div className="Popup">
-        <div className="Popup__content">{children}</div>
+        <div className="Popup__header">
+          {title && (
+            <Subtitle className="Popup__title">Создание Клиента</Subtitle>
+          )}
+          <CloseIcon onClick={onClose} className="Popup__close" />
+        </div>
+        <div className="Popup__content" style={{width: `${contentWidth}px`}}>{children}</div>
       </div>
       <div className="Background" onClick={callbacks.onClose} />
     </Portal>

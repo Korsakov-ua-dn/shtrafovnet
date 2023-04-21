@@ -1,22 +1,24 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 
 import { customerReducer } from "@/entities/customer";
+import { popupsReducer } from "@/features/popup";
+
+const rootReducer = combineReducers({
+  customer: customerReducer,
+  popups: popupsReducer,
+});
 
 export const makeStore = () =>
   configureStore({
-    reducer: {
-      customer: customerReducer,
-    },
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
     devTools: true,
   });
 
 export type AppStore = ReturnType<typeof makeStore>;
-// export type AppThunk<ReturnType = void> = ThunkAction<
-//   ReturnType,
-//   AppState,
-//   unknown,
-//   Action
-// >;
 
 export const wrapper = createWrapper<AppStore>(makeStore);

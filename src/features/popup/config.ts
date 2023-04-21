@@ -1,11 +1,11 @@
-import { AddCustomer } from './ui/add-customer';
+import { AddCustomerPopup } from './ui/add-customer-popup';
 
 export enum POPUPS {
   addCustomer = 'addCustomer',
 }
 
 export const popups = {
-  [POPUPS.addCustomer]: AddCustomer,
+  [POPUPS.addCustomer]: AddCustomerPopup,
 };
 
 export type PopupsNameType = keyof typeof popups;

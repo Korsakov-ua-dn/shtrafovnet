@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "@/shared/hooks";
 import { PageLayout } from "@/shared/ui/page-layout";
 import { Section } from "@/shared/ui/section";
 import { Layout } from "@/shared/ui/layout";
-import { ICustomer } from "@/shared/api";
 import { fetchAllCustomers } from "@/entities/customer";
 import { CustomersTable } from "@/features/customers-table";
 import { CustomersControls } from "@/widgets/customers-controls";

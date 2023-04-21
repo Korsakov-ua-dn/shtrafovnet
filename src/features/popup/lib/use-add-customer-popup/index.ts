@@ -8,16 +8,16 @@ import { POPUPS } from '../../config';
 export function useAddCustomer() {
   const dispatch = useAppDispatch();
 
-  const addCustomerPopup = useMemo(
+  const feedbackPopup = useMemo(
     () => ({
       name: POPUPS.addCustomer,
-      onClose: () => dispatch(popupsActions.close(addCustomerPopup)),
+      onClose: () => dispatch(popupsActions.close(feedbackPopup)),
     }),
     [dispatch]
   );
 
   return useCallback(
-    () => dispatch(popupsActions.open(addCustomerPopup)),
-    [dispatch, addCustomerPopup]
+    () => dispatch(popupsActions.open(feedbackPopup)),
+    [dispatch, feedbackPopup]
   );
 }

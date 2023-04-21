@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { typedMemo } from '@/shared/hocs';
 
 import './style.scss';
 
@@ -8,11 +8,11 @@ interface IProps {
   onSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void;
 }
 
-export const Form: React.FC<IProps> = memo(
+export const Form: React.FC<IProps> = typedMemo(
   ({ children, className, onSubmit }) => {
     return (
       <form
-        className={`Form ${className ? 'Form_' + className : ''}`}
+        className={`Form ${className ? className : ''}`}
         onSubmit={onSubmit}
       >
         {children}
