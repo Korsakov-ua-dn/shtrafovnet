@@ -1,0 +1,9 @@
+@import '@/shared/scss/mixines.scss';
+
+.CustomersControls {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include uselectable();
+}

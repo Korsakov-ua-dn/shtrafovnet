@@ -8,6 +8,7 @@ import { Layout } from "@/shared/ui/layout";
 import { ICustomer } from "@/shared/api";
 import { fetchAllCustomers } from "@/entities/customer";
 import { CustomersTable } from "@/features/customers-table";
+import { CustomersControls } from "@/widgets/customers-controls";
 
 // const inter = Roboto({ subsets: ["cyrillic"], weight: ["400"] });
 // className={inter.className}
@@ -42,7 +43,7 @@ const Main: React.FC = () => {
       <main>
         <Section>
           <Layout>
-            {/* <CustomerControls /> */}
+            <CustomersControls />
 
             <CustomersTable />
           </Layout>
