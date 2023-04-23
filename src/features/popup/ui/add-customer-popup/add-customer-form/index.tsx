@@ -1,15 +1,13 @@
+import { useCallback, useMemo, useRef } from "react";
 import Button from "@mui/material/Button";
-import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import {
-  Form,
-  Fieldset,
-  FieldWrapper,
-  Input,
-  ButtonDashed,
-} from "@/shared/ui/form-component";
+import { Form } from "@/shared/ui/form-component";
+
+import { InvoiceEmails, invoice_emails } from "../invoice-emails";
+import { ClientDetails, client_details } from "../client-details";
 
 import "./style.scss";
 
@@ -21,6 +19,7 @@ export const AddCustomerForm = () => {
     register,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
+    // reValidateMode: "onSubmit",
   });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
@@ -29,45 +28,30 @@ export const AddCustomerForm = () => {
     console.log(JSON.stringify(data, null, 4));
   };
 
-  const { fields, append, remove } = useFieldArray({
-    name: "invoice_emails",
-    control,
-  });
+  const clientDetailsErrors = useMemo(
+    () => ({ name: errors.name, email: errors.email }),
+    [errors.name, errors.email]
+  );
+  const invoiceEmailsErrors = useMemo(
+    () => ({
+      email: errors.email,
+      invoice_emails: errors.invoice_emails,
+    }),
+    [errors.email, errors.invoice_emails]
+  );
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="AddCustomerForm">
-      <Fieldset legend="Emails для счетов">
-        <Input
-          {...register("email" as const)}
-          type="email"
-          error={!!errors["email"]}
-          helperText={errors["email"]?.message || " "}
-          label="Email"
-          className="AddCustomerForm__input"
-        />
-        {fields.map((item, i) => (
-          <FieldWrapper key={item.id}>
-            <Input
-              {...register(`invoice_emails.${i}.name` as const)}
-              type="email"
-              error={!!errors["invoice_emails"]?.[i]?.name}
-              helperText={errors["invoice_emails"]?.[i]?.name?.message || " "}
-              label="Email"
-              className="AddCustomerForm__input"
-            />
-            <ButtonDashed
-              type="button"
-              onClick={() => remove(i)}
-              action="remove"
-            >
-              - Удалить email
-            </ButtonDashed>
-          </FieldWrapper>
-        ))}
-        <ButtonDashed onClick={() => append({ name: "" })}>
-          + Добавить еще email
-        </ButtonDashed>
-      </Fieldset>
+      <ClientDetails
+        control={control}
+        register={register}
+        errors={clientDetailsErrors}
+      />
+      <InvoiceEmails
+        control={control}
+        register={register}
+        errors={invoiceEmailsErrors}
+      />
 
       <Button type="submit" variant="contained">
         Создать
@@ -77,12 +61,8 @@ export const AddCustomerForm = () => {
 };
 
 const schema = yup.object().shape({
-  email: yup.string().required("Введите Email"),
-  ["invoice_emails"]: yup.array().of(
-    yup.object().shape({
-      name: yup.string().required("Введите Email"),
-    })
-  ),
+  ...client_details,
+  ...invoice_emails,
 });
 
 export type FormData = yup.InferType<typeof schema>;

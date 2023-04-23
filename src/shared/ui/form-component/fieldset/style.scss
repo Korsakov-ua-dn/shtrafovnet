@@ -7,3 +7,33 @@
   gap: 20px;
   align-items: flex-start;
 }
+
+.Fieldset__legend {
+  font-size: 20px;
+  line-height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Fieldset__legend::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url("./arrow-right.svg");
+  background-position: center;
+  background-size: contain;
+}
+
+.Fieldset__legend_expanded::before {
+  transform: rotate(90deg);
+}
+
+.Fieldset__collapse {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
