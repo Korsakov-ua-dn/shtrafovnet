@@ -5,13 +5,13 @@ import {
   UseFormRegister,
   FieldErrors,
 } from "react-hook-form";
-import * as yup from "yup";
 
 import {
   Fieldset,
   FieldWrapper,
   Input,
   ButtonDashed,
+  Border,
 } from "@/shared/ui/form-component";
 
 import type { FormData } from "../add-customer-form";
@@ -19,7 +19,6 @@ import { useEffect } from "react";
 
 interface IProps {
   control: Control<FormData>;
-  // register: any;
   register: UseFormRegister<FormData>;
   errors: FieldErrors<FormData>;
 }
@@ -35,8 +34,8 @@ export const InvoiceEmails: React.FC<IProps> = typedMemo(
 
     useEffect(() => {
       append({ name: "" });
-      return () => remove(0); // исправляет двойное добавление из-за strict mode
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      return () => remove(0); // исправляет двойное добавление default field из-за strict mode
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -51,15 +50,19 @@ export const InvoiceEmails: React.FC<IProps> = typedMemo(
               label="Email"
               className="AddCustomerForm__input"
             />
-            <ButtonDashed
-              type="button"
-              onClick={() => remove(i)}
-              action="remove"
-            >
-              - Удалить email
-            </ButtonDashed>
+            {i > 0 && ( // кнопка удаления для всех кроме дефолтного email
+              <ButtonDashed
+                type="button"
+                onClick={() => remove(i)}
+                action="remove"
+              >
+                - Удалить email
+              </ButtonDashed>
+            )}
           </FieldWrapper>
         ))}
+
+        <Border />
 
         <ButtonDashed type="button" onClick={() => append({ name: "" })}>
           + Добавить еще email
@@ -68,11 +71,3 @@ export const InvoiceEmails: React.FC<IProps> = typedMemo(
     );
   }
 );
-
-export const invoice_emails = {
-  ["invoice_emails"]: yup.array().of(
-    yup.object().shape({
-      name: yup.string().required("Введите Email"),
-    })
-  ),
-};

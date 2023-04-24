@@ -1,21 +1,17 @@
 import { typedMemo } from "@/shared/hocs";
-import { Control, UseFormRegister, FieldErrors } from "react-hook-form";
-import * as yup from "yup";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
 
 import { Fieldset, Input } from "@/shared/ui/form-component";
 
 import type { FormData } from "../add-customer-form";
 
 interface IProps {
-  control: Control<FormData>;
   register: UseFormRegister<FormData>;
   errors: FieldErrors<FormData>;
 }
 
 export const ClientDetails: React.FC<IProps> = typedMemo(
-  ({ control, register, errors }) => {
-    console.log("Render Client");
-
+  ({ register, errors }) => {
     return (
       <Fieldset legend="Детали Клиента">
         <Input
@@ -35,27 +31,22 @@ export const ClientDetails: React.FC<IProps> = typedMemo(
           className="AddCustomerForm__input"
         />
 
-        {/* <Input
-        {...register("name" as const)}
-        error={!!errors["name"]}
-        helperText={errors["name"]?.message || " "}
-        label="Email"
-        className="AddCustomerForm__input"
-      />
+        <Input
+          {...register("deferral_days" as const)}
+          error={!!errors["deferral_days"]}
+          helperText={errors["deferral_days"]?.message || " "}
+          label="Дней отсрочки"
+          className="AddCustomerForm__input"
+        />
 
-      <Input
-        {...register("name" as const)}
-        error={!!errors["name"]}
-        helperText={errors["name"]?.message || " "}
-        label="Email"
-        className="AddCustomerForm__input"
-      /> */}
+        <Input
+          {...register("credit_limit" as const)}
+          error={!!errors["credit_limit"]}
+          helperText={errors["credit_limit"]?.message || " "}
+          label="Кредитный лимит"
+          className="AddCustomerForm__input"
+        />
       </Fieldset>
     );
   }
 );
-
-export const client_details = {
-  ["name"]: yup.string().required("Введите Имя"),
-  ["email"]: yup.string().required("Введите Email"),
-};

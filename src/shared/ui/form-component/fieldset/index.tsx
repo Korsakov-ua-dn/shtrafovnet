@@ -25,7 +25,7 @@ export const Fieldset: React.FC<IProps> = typedMemo(({ children, legend }) => {
       <legend className={legendClassName} onClick={handleChange}>
         &nbsp;{legend}
       </legend>
-      
+
       <Collapse in={isExpanded} className="Fieldset__collapse">
         {children}
       </Collapse>

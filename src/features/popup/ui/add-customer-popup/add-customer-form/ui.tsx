@@ -1,25 +1,27 @@
-import { useCallback, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import Button from "@mui/material/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Form } from "@/shared/ui/form-component";
 
-import { InvoiceEmails, invoice_emails } from "../invoice-emails";
-import { ClientDetails, client_details } from "../client-details";
+import { InvoiceEmails } from "../invoice-emails/ui";
+import { ClientDetails } from "../client-details";
+import { BankAccounts } from "../bank-accounts";
 
+import { FormData, schema } from "./validation";
 import "./style.scss";
 
 export const AddCustomerForm = () => {
   const {
     control,
-    formState: { errors },
+    formState: { errors,  },
     handleSubmit,
     register,
+    setValue,
+    getValues,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-    // reValidateMode: "onSubmit",
   });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
@@ -29,24 +31,39 @@ export const AddCustomerForm = () => {
   };
 
   const clientDetailsErrors = useMemo(
-    () => ({ name: errors.name, email: errors.email }),
-    [errors.name, errors.email]
+    () => ({
+      name: errors.name,
+      email: errors.email,
+      deferral_days: errors.deferral_days,
+      credit_limit: errors.credit_limit,
+    }),
+    [errors.name, errors.email, errors.deferral_days, errors.credit_limit]
   );
   const invoiceEmailsErrors = useMemo(
     () => ({
-      email: errors.email,
       invoice_emails: errors.invoice_emails,
     }),
-    [errors.email, errors.invoice_emails]
+    [errors.invoice_emails]
+  );
+  const bankAccountsErrors = useMemo(
+    () => ({
+      bank_accounts: errors.bank_accounts,
+    }),
+    [errors.bank_accounts]
   );
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="AddCustomerForm">
-      <ClientDetails
+      <ClientDetails register={register} errors={clientDetailsErrors} />
+
+      <BankAccounts
         control={control}
         register={register}
-        errors={clientDetailsErrors}
+        getValues={getValues}
+        setValue={setValue}
+        errors={bankAccountsErrors}
       />
+
       <InvoiceEmails
         control={control}
         register={register}
@@ -59,10 +76,3 @@ export const AddCustomerForm = () => {
     </Form>
   );
 };
-
-const schema = yup.object().shape({
-  ...client_details,
-  ...invoice_emails,
-});
-
-export type FormData = yup.InferType<typeof schema>;
