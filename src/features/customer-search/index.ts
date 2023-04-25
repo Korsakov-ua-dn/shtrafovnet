@@ -1,3 +1,3 @@
-export { customerSearchReducer, customerSearchSetValue } from './model';
+export { customerSearchReducer } from './model';
 export { CustomersSearch } from './ui';
 
