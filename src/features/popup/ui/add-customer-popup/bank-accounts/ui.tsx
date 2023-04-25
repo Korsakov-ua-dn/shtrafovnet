@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import {
   useFieldArray,
   Control,
@@ -16,7 +16,7 @@ import {
   InputsBlock,
   ButtonDashed,
   SwitchMUI,
-  Border
+  Border,
 } from "@/shared/ui/form-component";
 
 import type { FormData } from "../add-customer-form/";
@@ -36,6 +36,16 @@ export const BankAccounts: React.FC<IProps> = typedMemo(
       control,
     });
 
+    const addAccountHandler = useCallback(() => {
+      append({
+        name: "",
+        account_number: "",
+        bik: "",
+        corr_account_number: "",
+        is_default: false,
+      });
+    }, [append]);
+
     const bank_accounts = getValues().bank_accounts;
 
     useEffect(() => {
@@ -52,87 +62,100 @@ export const BankAccounts: React.FC<IProps> = typedMemo(
 
     return (
       <Fieldset legend="Банковские счета">
-        {fields.map((item, i) => (
-          <FieldWrapper key={item.id}>
-            <InputsBlock>
-              <Input
-                {...register(`bank_accounts.${i}.name` as const)}
-                error={!!errors["bank_accounts"]?.[i]?.name}
-                helperText={errors["bank_accounts"]?.[i]?.name?.message || " "}
-                label="Название счета"
-                className="AddCustomerForm__input"
-              />
+        {fields.map((item, i) => {
 
-              <Input
-                {...register(`bank_accounts.${i}.account_number` as const)}
-                error={!!errors["bank_accounts"]?.[i]?.account_number}
-                helperText={
-                  errors["bank_accounts"]?.[i]?.account_number?.message || " "
-                }
-                label="Номер счета"
-                className="AddCustomerForm__input"
-              />
+          const cb = {
+            toggleIsDefault: () => {
+              const newArr = bank_accounts?.map((obj, index) =>
+                i === index
+                  ? { ...obj, is_default: true }
+                  : { ...obj, is_default: false }
+              );
+              setValue("bank_accounts", newArr);
+            },
+  
+            // Если удаляется счет с включенным свитчером, в активное состояние переводится свитчер первого счета
+            removeAccountHandler: () => {
+              if (item.is_default) { 
+                setValue(
+                  "bank_accounts",
+                  bank_accounts.map((acc, i) =>
+                    i === 0 ? { ...acc, is_default: true } : acc
+                  )
+                );
+              }
+              remove(i);
+            },
+          }
 
-              <Input
-                {...register(`bank_accounts.${i}.bik` as const)}
-                error={!!errors["bank_accounts"]?.[i]?.bik}
-                helperText={errors["bank_accounts"]?.[i]?.bik?.message || " "}
-                label="Бик счета"
-                className="AddCustomerForm__input"
-              />
+          return (
+            <FieldWrapper key={item.id}>
+              <InputsBlock>
+                <Input
+                  {...register(`bank_accounts.${i}.name` as const)}
+                  error={!!errors["bank_accounts"]?.[i]?.name}
+                  helperText={
+                    errors["bank_accounts"]?.[i]?.name?.message || " "
+                  }
+                  label="Название счета"
+                  className="AddCustomerForm__input"
+                />
 
-              <Input
-                {...register(`bank_accounts.${i}.corr_account_number` as const)}
-                error={!!errors["bank_accounts"]?.[i]?.corr_account_number}
-                helperText={
-                  errors["bank_accounts"]?.[i]?.corr_account_number?.message ||
-                  " "
-                }
-                label="Корр. номер счета"
-                className="AddCustomerForm__input"
-              />
+                <Input
+                  {...register(`bank_accounts.${i}.account_number` as const)}
+                  error={!!errors["bank_accounts"]?.[i]?.account_number}
+                  helperText={
+                    errors["bank_accounts"]?.[i]?.account_number?.message || " "
+                  }
+                  label="Номер счета"
+                  className="AddCustomerForm__input"
+                />
 
-              <SwitchMUI
-                {...register(`bank_accounts.${i}.is_default` as const)}
-                checked={item.is_default}
-                disabled={item.is_default}
-                onChange={() => {
-                  const newArr = bank_accounts?.map((obj, index) =>
-                    i === index
-                      ? { ...obj, is_default: true }
-                      : { ...obj, is_default: false }
-                  );
-                  setValue("bank_accounts", newArr);
-                }}
-              />
-            </InputsBlock>
+                <Input
+                  {...register(`bank_accounts.${i}.bik` as const)}
+                  error={!!errors["bank_accounts"]?.[i]?.bik}
+                  helperText={errors["bank_accounts"]?.[i]?.bik?.message || " "}
+                  label="Бик счета"
+                  className="AddCustomerForm__input"
+                />
 
-            {i > 0 && ( // кнопка удаления для всех кроме дефолтного счета
-              <ButtonDashed
-                type="button"
-                onClick={() => remove(i)}
-                action="remove"
-              >
-                - Удалить счет
-              </ButtonDashed>
-            )}
-          </FieldWrapper>
-        ))}
+                <Input
+                  {...register(
+                    `bank_accounts.${i}.corr_account_number` as const
+                  )}
+                  error={!!errors["bank_accounts"]?.[i]?.corr_account_number}
+                  helperText={
+                    errors["bank_accounts"]?.[i]?.corr_account_number
+                      ?.message || " "
+                  }
+                  label="Корр. номер счета"
+                  className="AddCustomerForm__input"
+                />
+
+                <SwitchMUI
+                  {...register(`bank_accounts.${i}.is_default` as const)}
+                  checked={item.is_default}
+                  disabled={item.is_default}
+                  onChange={cb.toggleIsDefault}
+                />
+              </InputsBlock>
+
+              {i > 0 && ( // кнопка удаления для всех кроме дефолтного счета
+                <ButtonDashed
+                  type="button"
+                  onClick={cb.removeAccountHandler}
+                  action="remove"
+                >
+                  - Удалить счет
+                </ButtonDashed>
+              )}
+            </FieldWrapper>
+          );
+        })}
 
         <Border />
 
-        <ButtonDashed
-          type="button"
-          onClick={() =>
-            append({
-              name: "",
-              account_number: "",
-              bik: "",
-              corr_account_number: "",
-              is_default: false,
-            })
-          }
-        >
+        <ButtonDashed type="button" onClick={addAccountHandler}>
           + Добавить еще счет
         </ButtonDashed>
       </Fieldset>

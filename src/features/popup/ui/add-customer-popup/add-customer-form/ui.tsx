@@ -5,8 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Form } from "@/shared/ui/form-component";
 
-import { prepareData } from "../../../lib/prepare-add-customer-data";
-
 import { ClientDetails } from "../client-details";
 import { Organization } from "../organization";
 import { BankAccounts } from "../bank-accounts";

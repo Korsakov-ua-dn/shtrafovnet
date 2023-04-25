@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const Fieldset: React.FC<IProps> = typedMemo(({ children, legend }) => {
-  const [isExpanded, setExpanded] = useState<boolean>(false);
+  const [isExpanded, setExpanded] = useState<boolean>(true);
   const handleChange = () => {
     setExpanded((prev) => !prev);
   };
