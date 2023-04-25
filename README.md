@@ -10,12 +10,15 @@
 ### Скриншоты приложения:
 
  1. Табличный компонент -
+
   ![Screenshot of table component](/../screenshot/screenshots/table.png?raw=true "Табличный компонент")
 
  2. Табличный компонент с введенным значением в поиск -
+
   ![Screenshot of table component filtered by search](/../screenshot/screenshots/table_search.png?raw=true "Табличный компонент отфильтрованный по поиску")
 
  3. Скриншот модального она с формой добавления нового клиента -
+
   ![Screenshot of popup](/../screenshot/screenshots/popup.png?raw=true "Модальное окно")
 
 ### Ссылка на приложение развернутое на хостинге vercel:
@@ -23,7 +26,7 @@ https://shtrafovnet-tau.vercel.app
 
 ## Технологический стек:
 
-Feature Sliced Design, Next, TypeScript, Redux Toolkit, Reselect, Axios, miragejs, react-hook-form, yup, Material UI, SCSS.
+Feature Sliced Design, NextJS, TypeScript, Redux Toolkit, Reselect, Axios, miragejs, react-hook-form, yup, Material UI, SCSS.
 
 ## Требования
 
