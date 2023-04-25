@@ -14,5 +14,18 @@ export const dataTransferObject = {
       })
       .replace(',', '');
   },
-  deferral_days: (data: number) => `${formatNumber(data)} дней`,
+  deferral_days: (data: number) => `${formatNumber(data)} ${days[form(data)]}`,
 };
+
+const days = {
+  zero: "дней",
+  one: "день",
+  two: "дня",
+  few: "дней",
+  many: "дней",
+  other: "дней", 
+};
+
+function form(number: number) {
+  return new Intl.PluralRules("ru-RU").select(number)
+}

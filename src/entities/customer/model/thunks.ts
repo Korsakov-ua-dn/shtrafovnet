@@ -38,7 +38,8 @@ export const addCustomer = createAsyncThunk<
 >("customers/ADD", async (payload, { rejectWithValue }) => {
   try {
     const response = await customersAPI.add(payload);
-
+    // console.log("API", JSON.stringify(payload, null, 4));
+    
     // if (!isArray(response.data)) { // TODO type guard server responce
     //   return rejectWithValue("Не корректный ответ сервера");
     // }
