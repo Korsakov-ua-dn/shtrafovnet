@@ -5,17 +5,25 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Form } from "@/shared/ui/form-component";
 
-import { InvoiceEmails } from "../invoice-emails/ui";
+import { prepareData } from "../../../lib/prepare-add-customer-data";
+
 import { ClientDetails } from "../client-details";
+import { Organization } from "../organization";
 import { BankAccounts } from "../bank-accounts";
+import { InvoiceEmails } from "../invoice-emails/ui";
+import { Metadata } from "../metadata";
 
 import { FormData, schema } from "./validation";
 import "./style.scss";
 
-export const AddCustomerForm = () => {
+interface IProps {
+  onSubmit: SubmitHandler<FormData>;
+}
+
+export const AddCustomerForm: React.FC<IProps> = ({ onSubmit }) => {
   const {
     control,
-    formState: { errors,  },
+    formState: { errors },
     handleSubmit,
     register,
     setValue,
@@ -24,50 +32,62 @@ export const AddCustomerForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    // onClose();
-    // console.log(data["invoice_emails"]?.map((el) => el.name)); // prepare emails
-    console.log(JSON.stringify(data, null, 4));
-  };
+  const err = {
+    clientDetails: useMemo(
+      () => ({
+        name: errors.name,
+        email: errors.email,
+        deferral_days: errors.deferral_days,
+        credit_limit: errors.credit_limit,
+      }),
+      [errors.name, errors.email, errors.deferral_days, errors.credit_limit]
+    ),
 
-  const clientDetailsErrors = useMemo(
-    () => ({
-      name: errors.name,
-      email: errors.email,
-      deferral_days: errors.deferral_days,
-      credit_limit: errors.credit_limit,
-    }),
-    [errors.name, errors.email, errors.deferral_days, errors.credit_limit]
-  );
-  const invoiceEmailsErrors = useMemo(
-    () => ({
-      invoice_emails: errors.invoice_emails,
-    }),
-    [errors.invoice_emails]
-  );
-  const bankAccountsErrors = useMemo(
-    () => ({
-      bank_accounts: errors.bank_accounts,
-    }),
-    [errors.bank_accounts]
-  );
+    organization: useMemo(
+      () => ({
+        organization: errors.organization,
+      }),
+      [errors.organization]
+    ),
+
+    invoiceEmails: useMemo(
+      () => ({
+        invoice_emails: errors.invoice_emails,
+      }),
+      [errors.invoice_emails]
+    ),
+
+    bankAccounts: useMemo(
+      () => ({
+        bank_accounts: errors.bank_accounts,
+      }),
+      [errors.bank_accounts]
+    ),
+  }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="AddCustomerForm">
-      <ClientDetails register={register} errors={clientDetailsErrors} />
+      <ClientDetails register={register} errors={err.clientDetails} />
+
+      <Organization register={register} errors={err.organization} />
 
       <BankAccounts
         control={control}
         register={register}
         getValues={getValues}
         setValue={setValue}
-        errors={bankAccountsErrors}
+        errors={err.bankAccounts}
       />
 
       <InvoiceEmails
         control={control}
         register={register}
-        errors={invoiceEmailsErrors}
+        errors={err.invoiceEmails}
+      />
+
+      <Metadata
+        control={control}
+        register={register}
       />
 
       <Button type="submit" variant="contained">

@@ -5,9 +5,7 @@ export interface ICustomer   {
   deferral_days: number,
   org: Org,
   balance: Balance,
-  metadata: {
-    key1: string,
-  },
+  metadata: Record<string, string>,
   created_at: string,
   updated_at: string,
   status: string,

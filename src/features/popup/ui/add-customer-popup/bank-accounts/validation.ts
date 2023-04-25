@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 export const bank_accounts = {
-    ["bank_accounts"]: yup.array().of(
+    "bank_accounts": yup.array().of(
       yup.object().shape({
         name: yup.string().required("Введите название счета"),
         account_number: yup.string().required("Введите номер счета"),

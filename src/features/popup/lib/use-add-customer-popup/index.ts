@@ -5,7 +5,10 @@ import { useAppDispatch } from '@/shared/hooks';
 import { popupsActions } from '../../model';
 import { POPUPS } from '../../config';
 
-export function useAddCustomer() {
+/**
+ * @returns мемоизированный колбэк для открытия модального окна добавления нового клиента
+ */
+export function useAddCustomer(): () => void {
   const dispatch = useAppDispatch();
 
   const feedbackPopup = useMemo(

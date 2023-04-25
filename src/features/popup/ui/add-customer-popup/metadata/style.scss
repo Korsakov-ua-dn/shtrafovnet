@@ -1,0 +1,31 @@
+@import '@/shared/scss/mixines.scss';
+
+.MetaTable {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--color_light_grey);
+    border-top: 1px solid var(--color_light_grey);
+}
+
+.MetaTable__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 60px;
+    grid-auto-rows: 62px;
+}
+
+.MetaTable__nodata,
+.MetaTable__key,
+.MetaTable__value,
+.MetaTable__remove {
+    padding: 10px;
+    border-right: 1px solid var(--color_light_grey);
+    border-bottom: 1px solid var(--color_light_grey);
+    @include flexCenter();
+    justify-content: flex-start;
+}
+
+.MetaTable__nodata {
+    height: 100px;
+    justify-content: center;
+}

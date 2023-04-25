@@ -1,2 +1,2 @@
-export { customerReducer, fetchAllCustomers } from './model';
-export { scheme } from './config';
+export { customerReducer, fetchAllCustomers, addCustomer } from "./model";
+export { scheme } from "./config";

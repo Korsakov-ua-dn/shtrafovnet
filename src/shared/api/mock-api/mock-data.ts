@@ -837,3 +837,13 @@ export const mockData = [
     invoice_emails: ["test@gmail.com"],
   },
 ];
+
+export const errorResponse = {
+  "code": 0,
+  "message": "Ошибка клиента",
+  "details": [
+    {
+      "test": "asdad",
+    }
+  ]
+}

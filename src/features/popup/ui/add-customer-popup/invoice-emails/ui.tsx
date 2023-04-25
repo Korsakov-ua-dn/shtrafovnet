@@ -30,8 +30,6 @@ export const InvoiceEmails: React.FC<IProps> = typedMemo(
       control,
     });
 
-    console.log("Render InvoiceEmails");
-
     useEffect(() => {
       append({ name: "" });
       return () => remove(0); // исправляет двойное добавление default field из-за strict mode

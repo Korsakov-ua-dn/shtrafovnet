@@ -26,15 +26,6 @@
   }
 }
 
-.Input:has(.Mui-focused) {
-  & label {
-    color:  var(--color_accent);
-  }
-  & fieldset {
-    border-color: var(--color_accent) !important;
-  }
-}
-
 .Input:has(.Mui-error) {
   & label {
     color:  var(--color_error);

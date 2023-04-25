@@ -3,7 +3,7 @@ import { HYDRATE } from "next-redux-wrapper";
 
 import type { ICustomer } from "@/shared/api/axios";
 
-import { fetchAllCustomers } from "./thunks";
+import { addCustomer, fetchAllCustomers } from "./thunks";
 
 type CustomerState = {
   data: ICustomer[];
@@ -26,7 +26,7 @@ const customerSlice = createSlice({
       .addCase(hydrate, (state, action) => {
         return {
           ...state,
-          ...action.payload.customers,
+          ...action.payload.customer,
         };
       })
       .addCase(fetchAllCustomers.pending, (state) => {
@@ -35,6 +35,14 @@ const customerSlice = createSlice({
       })
       .addCase(fetchAllCustomers.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.loading = false;
+      })
+      .addCase(addCustomer.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addCustomer.fulfilled, (state, action) => {
+        state.data.push(action.payload);
         state.loading = false;
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {

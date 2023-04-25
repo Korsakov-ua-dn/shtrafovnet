@@ -11,7 +11,7 @@ export const fetchAllCustomers = createAsyncThunk<
   ICustomer[],
   undefined,
   { rejectValue: string; state: RootState }
->("transactions/GET_ALL", async (_, { rejectWithValue }) => {
+>("customers/GET_ALL", async (_, { rejectWithValue }) => {
   try {
     const response = await customersAPI.getAll();
 
@@ -23,6 +23,30 @@ export const fetchAllCustomers = createAsyncThunk<
   } catch (err) {
     return rejectWithValue(
       "Произошла ошибка, попробуйте перезагрузить страницу"
+    );
+  }
+});
+
+/**
+ * Thunk
+ * @returns Возвращает нового клиента или ошибку
+ */
+export const addCustomer = createAsyncThunk<
+  ICustomer,
+  Partial<ICustomer>,
+  { rejectValue: string; state: RootState }
+>("customers/ADD", async (payload, { rejectWithValue }) => {
+  try {
+    const response = await customersAPI.add(payload);
+
+    // if (!isArray(response.data)) { // TODO type guard server responce
+    //   return rejectWithValue("Не корректный ответ сервера");
+    // }
+
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(
+      "Произошла ошибка, попробуйте еще раз"
     );
   }
 });
