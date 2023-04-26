@@ -1,6 +1,6 @@
-import { MouseEvent, useCallback, useEffect } from "react";
-
+import { useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+
 import { Portal } from "../portal";
 import { Subtitle } from "../subtitle";
 
@@ -13,14 +13,12 @@ interface IProps {
   onClose: () => void;
 }
 
-export const Popup: React.FC<IProps> = ({ children, title, contentWidth=500, onClose }) => {
-  const callbacks = {
-    onClose: useCallback(
-      (e: MouseEvent<HTMLDivElement>) => onClose(),
-      [onClose]
-    ),
-  };
-
+export const Popup: React.FC<IProps> = ({
+  children,
+  title,
+  contentWidth = 500,
+  onClose,
+}) => {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -37,9 +35,13 @@ export const Popup: React.FC<IProps> = ({ children, title, contentWidth=500, onC
           )}
           <CloseIcon onClick={onClose} className="Popup__close" />
         </div>
-        <div className="Popup__content" style={{width: `${contentWidth}px`}}>{children}</div>
+
+        <div className="Popup__content" style={{ width: `${contentWidth}px` }}>
+          {children}
+        </div>
       </div>
-      <div className="Background" onClick={callbacks.onClose} />
+
+      <div className="Background" onClick={onClose} />
     </Portal>
   );
 };

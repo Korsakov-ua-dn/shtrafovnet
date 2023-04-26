@@ -1,5 +1,7 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Tooltip from '@mui/material/Tooltip';
+
+import { typedMemo } from '@/shared/hocs';
 
 import './style.scss';
 
@@ -37,4 +39,4 @@ const WithTooltip = (props: IProps) => {
   );
 };
 
-export default memo(WithTooltip) as typeof WithTooltip;
+export default typedMemo(WithTooltip);

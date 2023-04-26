@@ -1,4 +1,4 @@
-import { MouseEvent, memo } from "react";
+import { typedMemo } from "@/shared/hocs";
 import StraightIcon from "@mui/icons-material/Straight";
 
 import WithTooltip from "@/shared/ui/with-tooltip";
@@ -14,7 +14,7 @@ interface IProps<T> {
   scheme: Scheme<T>;
   isActiveField: boolean;
   direction?: Direction;
-  onSort?: (e: MouseEvent<HTMLElement>) => void;
+  onSort?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const Th = <T,>(props: IProps<T>): JSX.Element => {
@@ -47,4 +47,4 @@ const Th = <T,>(props: IProps<T>): JSX.Element => {
   );
 };
 
-export default memo(Th) as typeof Th;
+export default typedMemo(Th);

@@ -1,11 +1,14 @@
+import { useEffect } from 'react';
+import { Provider } from 'react-redux';
 import type { AppProps } from 'next/app';
 
 import { createMirageServer } from '@/shared/api';
 import { wrapper } from '@/store';
 import '@/styles/globals.scss';
-import { useEffect } from 'react';
 
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, ...rest }: AppProps) {
+  const { store, props } = wrapper.useWrappedStore(rest);
+
   useEffect(() => {
     if (process.env.USE_MIRAGE_SERVER === 'true') {
       console.log('ATTENTION - Using mirage server')
@@ -13,7 +16,11 @@ function App({ Component, pageProps }: AppProps) {
     }
   }, [])
   
-  return <Component {...pageProps} />
+  return (
+    <Provider store={store}>
+      <Component {...props.pageProps} />
+    </Provider>
+  )
 }
 
-export default wrapper.withRedux(App);
+export default App;

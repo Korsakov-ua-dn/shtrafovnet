@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import type { ColorScheme } from "../types";
 
 import "./style.scss";

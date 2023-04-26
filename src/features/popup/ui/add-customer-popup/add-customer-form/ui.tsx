@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+import { typedMemo } from "@/shared/hocs";
 import { Form } from "@/shared/ui/form-component";
 
 import { ClientDetails } from "../client-details";
@@ -18,7 +19,7 @@ interface IProps {
   onSubmit: SubmitHandler<FormData>;
 }
 
-export const AddCustomerForm: React.FC<IProps> = ({ onSubmit }) => {
+export const AddCustomerForm: React.FC<IProps> = typedMemo(({ onSubmit }) => {
   const {
     control,
     formState: { errors },
@@ -93,4 +94,4 @@ export const AddCustomerForm: React.FC<IProps> = ({ onSubmit }) => {
       </Button>
     </Form>
   );
-};
+});

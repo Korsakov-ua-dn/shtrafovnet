@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback } from 'react';
+import { useCallback } from 'react';
 import { v1 } from 'uuid';
 
 import { typedMemo } from '@/shared/hocs';
@@ -24,7 +24,7 @@ const Thead = <T extends object>({
 }: IProps<T>) => {
   // Один обработчик для всех полей
   const onSortHendler = useCallback(
-    (e: MouseEvent<HTMLElement>) => {
+    (e: React.MouseEvent<HTMLElement>) => {
       const field = e.currentTarget.getAttribute('data-field') as keyof T;
       onSort && onSort(field);
     },
@@ -53,7 +53,7 @@ const Thead = <T extends object>({
   for (const key in scheme) {
     ThList.push(renderTh(key));
   }
-
+  
   return (
     <thead className="Thead" {...restProps}>
       <TrHead>{ThList}</TrHead>

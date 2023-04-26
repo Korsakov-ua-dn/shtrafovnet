@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Roboto } from "next/font/google";
 
 import { useAppDispatch, useAppSelector } from "@/shared/hooks";
 import { PageLayout } from "@/shared/ui/page-layout";
@@ -8,9 +7,6 @@ import { Layout } from "@/shared/ui/layout";
 import { fetchAllCustomers } from "@/entities/customer";
 import { CustomersTable } from "@/features/customers-table";
 import { CustomersControls } from "@/widgets/customers-controls";
-
-// const inter = Roboto({ subsets: ["cyrillic"], weight: ["400"] });
-// className={inter.className}
 
 const Main: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -26,15 +22,27 @@ const Main: React.FC = () => {
   }, [dispatch]);
 
   if (select.loading) {
-    return <Layout>Загрузка данных о клиентах...</Layout>;
+    return (
+      <Layout>
+        <Section>Загрузка данных о клиентах...</Section>
+      </Layout>
+    );
   }
 
   if (select.error) {
-    return <Layout>{select.error}</Layout>;
+    return (
+      <Layout>
+        <Section>{select.error}</Section>
+      </Layout>
+    );
   }
 
   if (!select.customers.length) {
-    return <Layout>Список клиентов пуст</Layout>;
+    return (
+      <Layout>
+        <Section>Список клиентов пуст</Section>
+      </Layout>
+    );
   }
 
   return (
