@@ -1,4 +1,4 @@
-import { typedMemo } from "@/shared/hocs";
+import { useEffect } from "react";
 import {
   useFieldArray,
   Control,
@@ -6,6 +6,7 @@ import {
   FieldErrors,
 } from "react-hook-form";
 
+import { typedMemo } from "@/shared/hocs";
 import {
   Fieldset,
   FieldWrapper,
@@ -15,7 +16,6 @@ import {
 } from "@/shared/ui/form-component";
 
 import type { FormData } from "../add-customer-form";
-import { useEffect } from "react";
 
 interface IProps {
   control: Control<FormData>;

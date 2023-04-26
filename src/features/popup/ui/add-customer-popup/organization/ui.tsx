@@ -1,6 +1,6 @@
-import { typedMemo } from "@/shared/hocs";
-import { UseFormRegister, FieldErrors } from "react-hook-form";
+import type { UseFormRegister, FieldErrors } from "react-hook-form";
 
+import { typedMemo } from "@/shared/hocs";
 import { Fieldset, Input } from "@/shared/ui/form-component";
 
 import type { FormData } from "../add-customer-form";
