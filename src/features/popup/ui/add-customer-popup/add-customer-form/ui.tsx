@@ -27,11 +27,15 @@ export const AddCustomerForm: React.FC<IProps> = typedMemo(({ onSubmit }) => {
     register,
     setValue,
     getValues,
+    trigger,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
+  console.log("State: ", getValues());
+
   const err = {
+    // объединил в единый объект ошибок для ClientDetails
     clientDetails: useMemo(
       () => ({
         name: errors.name,
@@ -42,27 +46,21 @@ export const AddCustomerForm: React.FC<IProps> = typedMemo(({ onSubmit }) => {
       [errors.name, errors.email, errors.deferral_days, errors.credit_limit]
     ),
 
+    // для того что-бы результат валидации показывать пользователю сразу при вводе значения необходимо явно указать в deps все зависимоти и обновить объект ошибки
     organization: useMemo(
       () => ({
         organization: errors.organization,
       }),
-      [errors.organization]
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [
+        errors.organization?.addr,
+        errors.organization?.inn,
+        errors.organization?.kpp,
+        errors.organization?.name,
+        errors.organization?.ogrn,
+      ]
     ),
-
-    invoiceEmails: useMemo(
-      () => ({
-        invoice_emails: errors.invoice_emails,
-      }),
-      [errors.invoice_emails]
-    ),
-
-    bankAccounts: useMemo(
-      () => ({
-        bank_accounts: errors.bank_accounts,
-      }),
-      [errors.bank_accounts]
-    ),
-  }
+  };
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="AddCustomerForm">
@@ -75,19 +73,19 @@ export const AddCustomerForm: React.FC<IProps> = typedMemo(({ onSubmit }) => {
         register={register}
         getValues={getValues}
         setValue={setValue}
-        errors={err.bankAccounts}
+        errors={errors}
       />
 
       <InvoiceEmails
         control={control}
         register={register}
-        errors={err.invoiceEmails}
+        errors={errors.invoice_emails}
+        setValue={setValue}
+        getValues={getValues}
+        trigger={trigger}
       />
 
-      <Metadata
-        control={control}
-        register={register}
-      />
+      <Metadata control={control} register={register} />
 
       <Button type="submit" variant="contained">
         Создать
