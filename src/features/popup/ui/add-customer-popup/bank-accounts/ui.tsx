@@ -6,7 +6,7 @@ import {
   FieldErrors,
   UseFormSetValue,
   UseFormGetValues,
-  UseFormTrigger
+  UseFormTrigger,
 } from "react-hook-form";
 
 import { typedMemo } from "@/shared/hocs";
@@ -65,39 +65,22 @@ export const BankAccounts: React.FC<IProps> = typedMemo(
     return (
       <Fieldset legend="Банковские счета">
         {fields.map((item, i) => {
-
           const cb = {
             toggleIsDefault: () => {
               bank_accounts?.forEach((obj, index) =>
-                i === index
-                  ? obj.is_default = true
-                  : obj.is_default = false
+                i === index ? (obj.is_default = true) : (obj.is_default = false)
               );
               setValue("bank_accounts", bank_accounts);
             },
-  
+
             // Если удаляется счет с включенным свитчером, в активное состояние переводится свитчер первого счета
             removeAccountHandler: () => {
-              if (item.is_default) { 
-                setValue(
-                  "bank_accounts",
-                  bank_accounts.map((acc, i) =>
-                    i === 0 ? { ...acc, is_default: true } : acc
-                  )
-                );
+              if (item.is_default) {
+                setValue(`bank_accounts.0.is_default`, true);
               }
               remove(i);
             },
-          }
-
-          // const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-          //   const field = e.currentTarget.getAttribute('data-field');
-          //   console.log(field);
-            
-          //   bank_accounts[i][field] = e.target.value;
-          //   // setValue(`bank_accounts`, bank_accounts);
-          //   trigger(`bank_accounts`); // trigger для улучшения UX т.к. форма возвращает мемоизированный объект ошибок
-          // }
+          };
 
           return (
             <FieldWrapper key={item.id}>
@@ -105,24 +88,20 @@ export const BankAccounts: React.FC<IProps> = typedMemo(
                 <Input
                   {...register(`bank_accounts.${i}.name` as const)}
                   error={!!errors?.[i]?.name}
-                  helperText={
-                    errors?.[i]?.name?.message || " "
-                  }
+                  helperText={errors?.[i]?.name?.message || " "}
                   label="Название счета"
                   className="AddCustomerForm__input"
-                  inputProps={{'data-field': 'name'}}
+                  inputProps={{ "data-field": "name" }}
                   onBlur={() => trigger(`bank_accounts`)}
                 />
 
                 <Input
                   {...register(`bank_accounts.${i}.account_number` as const)}
                   error={!!errors?.[i]?.account_number}
-                  helperText={
-                    errors?.[i]?.account_number?.message || " "
-                  }
+                  helperText={errors?.[i]?.account_number?.message || " "}
                   label="Номер счета"
                   className="AddCustomerForm__input"
-                  inputProps={{'data-field': 'account_number'}}
+                  inputProps={{ "data-field": "account_number" }}
                   onBlur={() => trigger(`bank_accounts`)}
                 />
 
@@ -132,7 +111,7 @@ export const BankAccounts: React.FC<IProps> = typedMemo(
                   helperText={errors?.[i]?.bik?.message || " "}
                   label="Бик счета"
                   className="AddCustomerForm__input"
-                  inputProps={{'data-field': 'bik'}}
+                  inputProps={{ "data-field": "bik" }}
                   onBlur={() => trigger(`bank_accounts`)}
                 />
 
@@ -141,13 +120,10 @@ export const BankAccounts: React.FC<IProps> = typedMemo(
                     `bank_accounts.${i}.corr_account_number` as const
                   )}
                   error={!!errors?.[i]?.corr_account_number}
-                  helperText={
-                    errors?.[i]?.corr_account_number
-                      ?.message || " "
-                  }
+                  helperText={errors?.[i]?.corr_account_number?.message || " "}
                   label="Корр. номер счета"
                   className="AddCustomerForm__input"
-                  inputProps={{'data-field': 'corr_account_number'}}
+                  inputProps={{ "data-field": "corr_account_number" }}
                   onBlur={() => trigger(`bank_accounts`)}
                 />
 

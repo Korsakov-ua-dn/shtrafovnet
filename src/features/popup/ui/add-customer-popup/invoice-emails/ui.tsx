@@ -50,7 +50,7 @@ export const InvoiceEmails: React.FC<IProps> = typedMemo(
                 helperText={errors?.[i]?.name?.message || " "}
                 label="Email"
                 className="AddCustomerForm__input"
-                onBlur={() => trigger(`invoice_emails`)}
+                onBlur={() => trigger(`invoice_emails`)} // trigger для улучшения UX т.к. форма возвращает мемоизированный объект ошибок
               />
               {i > 0 && ( // кнопка удаления для всех кроме дефолтного email
                 <ButtonDashed

@@ -32,8 +32,6 @@ export const AddCustomerForm: React.FC<IProps> = typedMemo(({ onSubmit }) => {
     resolver: yupResolver(schema),
   });
 
-  console.log("State: ", getValues());
-
   const err = {
     // объединил в единый объект ошибок для ClientDetails
     clientDetails: useMemo(
