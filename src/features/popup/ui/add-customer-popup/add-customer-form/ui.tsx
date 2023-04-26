@@ -73,15 +73,14 @@ export const AddCustomerForm: React.FC<IProps> = typedMemo(({ onSubmit }) => {
         register={register}
         getValues={getValues}
         setValue={setValue}
-        errors={errors}
+        errors={errors.bank_accounts}
+        trigger={trigger}
       />
 
       <InvoiceEmails
         control={control}
         register={register}
         errors={errors.invoice_emails}
-        setValue={setValue}
-        getValues={getValues}
         trigger={trigger}
       />
 

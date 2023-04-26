@@ -4,8 +4,6 @@ import {
   Control,
   UseFormRegister,
   FieldErrors,
-  UseFormSetValue,
-  UseFormGetValues,
   UseFormTrigger,
 } from "react-hook-form";
 
@@ -24,20 +22,15 @@ interface IProps {
   control: Control<FormData>;
   register: UseFormRegister<FormData>;
   errors: FieldErrors<FormData>;
-  getValues: UseFormGetValues<FormData>;
-  setValue: UseFormSetValue<FormData>;
   trigger: UseFormTrigger<FormData>;
 }
 
 export const InvoiceEmails: React.FC<IProps> = typedMemo(
-  ({ control, register, errors, getValues, setValue, trigger }) => {
+  ({ control, register, errors, trigger }) => {
     const { fields, append, remove } = useFieldArray({
       name: "invoice_emails",
       control,
     });
-
-    // console.log("invoice_emails");
-    const invoice_emails = getValues().invoice_emails;
 
     useEffect(() => {
       append({ name: "" });
@@ -48,12 +41,6 @@ export const InvoiceEmails: React.FC<IProps> = typedMemo(
     return (
       <Fieldset legend="Emails для счетов">
         {fields.map((item, i) => {
-          const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-            invoice_emails[i].name = e.target.value;
-            setValue(`invoice_emails`, invoice_emails);
-            trigger(`invoice_emails`); // trigger для улучшения UX т.к. форма возвращает мемоизированный объект ошибок
-          }
-
           return (
             <FieldWrapper key={item.id}>
               <Input
@@ -63,7 +50,7 @@ export const InvoiceEmails: React.FC<IProps> = typedMemo(
                 helperText={errors?.[i]?.name?.message || " "}
                 label="Email"
                 className="AddCustomerForm__input"
-                onChange={changeHandler}
+                onBlur={() => trigger(`invoice_emails`)}
               />
               {i > 0 && ( // кнопка удаления для всех кроме дефолтного email
                 <ButtonDashed

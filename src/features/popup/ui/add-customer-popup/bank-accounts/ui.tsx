@@ -6,6 +6,7 @@ import {
   FieldErrors,
   UseFormSetValue,
   UseFormGetValues,
+  UseFormTrigger
 } from "react-hook-form";
 
 import { typedMemo } from "@/shared/hocs";
@@ -27,10 +28,11 @@ interface IProps {
   getValues: UseFormGetValues<FormData>;
   setValue: UseFormSetValue<FormData>;
   errors: FieldErrors<FormData>;
+  trigger: UseFormTrigger<FormData>;
 }
 
 export const BankAccounts: React.FC<IProps> = typedMemo(
-  ({ control, register, getValues, setValue, errors }) => {
+  ({ control, register, getValues, setValue, errors, trigger }) => {
     const { fields, append, remove } = useFieldArray({
       name: "bank_accounts",
       control,
@@ -66,12 +68,12 @@ export const BankAccounts: React.FC<IProps> = typedMemo(
 
           const cb = {
             toggleIsDefault: () => {
-              const newArr = bank_accounts?.map((obj, index) =>
+              bank_accounts?.forEach((obj, index) =>
                 i === index
-                  ? { ...obj, is_default: true }
-                  : { ...obj, is_default: false }
+                  ? obj.is_default = true
+                  : obj.is_default = false
               );
-              setValue("bank_accounts", newArr);
+              setValue("bank_accounts", bank_accounts);
             },
   
             // Если удаляется счет с включенным свитчером, в активное состояние переводится свитчер первого счета
@@ -88,48 +90,65 @@ export const BankAccounts: React.FC<IProps> = typedMemo(
             },
           }
 
+          // const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+          //   const field = e.currentTarget.getAttribute('data-field');
+          //   console.log(field);
+            
+          //   bank_accounts[i][field] = e.target.value;
+          //   // setValue(`bank_accounts`, bank_accounts);
+          //   trigger(`bank_accounts`); // trigger для улучшения UX т.к. форма возвращает мемоизированный объект ошибок
+          // }
+
           return (
             <FieldWrapper key={item.id}>
               <InputsBlock>
                 <Input
                   {...register(`bank_accounts.${i}.name` as const)}
-                  error={!!errors["bank_accounts"]?.[i]?.name}
+                  error={!!errors?.[i]?.name}
                   helperText={
-                    errors["bank_accounts"]?.[i]?.name?.message || " "
+                    errors?.[i]?.name?.message || " "
                   }
                   label="Название счета"
                   className="AddCustomerForm__input"
+                  inputProps={{'data-field': 'name'}}
+                  onBlur={() => trigger(`bank_accounts`)}
                 />
 
                 <Input
                   {...register(`bank_accounts.${i}.account_number` as const)}
-                  error={!!errors["bank_accounts"]?.[i]?.account_number}
+                  error={!!errors?.[i]?.account_number}
                   helperText={
-                    errors["bank_accounts"]?.[i]?.account_number?.message || " "
+                    errors?.[i]?.account_number?.message || " "
                   }
                   label="Номер счета"
                   className="AddCustomerForm__input"
+                  inputProps={{'data-field': 'account_number'}}
+                  onBlur={() => trigger(`bank_accounts`)}
                 />
 
                 <Input
                   {...register(`bank_accounts.${i}.bik` as const)}
-                  error={!!errors["bank_accounts"]?.[i]?.bik}
-                  helperText={errors["bank_accounts"]?.[i]?.bik?.message || " "}
+                  error={!!errors?.[i]?.bik}
+                  helperText={errors?.[i]?.bik?.message || " "}
                   label="Бик счета"
                   className="AddCustomerForm__input"
+                  inputProps={{'data-field': 'bik'}}
+                  onBlur={() => trigger(`bank_accounts`)}
                 />
 
                 <Input
                   {...register(
                     `bank_accounts.${i}.corr_account_number` as const
                   )}
-                  error={!!errors["bank_accounts"]?.[i]?.corr_account_number}
+                  error={!!errors?.[i]?.corr_account_number}
                   helperText={
-                    errors["bank_accounts"]?.[i]?.corr_account_number
+                    errors?.[i]?.corr_account_number
                       ?.message || " "
                   }
                   label="Корр. номер счета"
                   className="AddCustomerForm__input"
+                  inputProps={{'data-field': 'corr_account_number'}}
+                  onBlur={() => trigger(`bank_accounts`)}
                 />
 
                 <SwitchMUI
